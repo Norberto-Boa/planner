@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createTripSchema = z.object({
-  destination: z.string().min(4),
+  destination: z.string({ required_error: "Required Error" }).min(4),
   starts_at: z.coerce.date(),
   ends_at: z.coerce.date(),
   owner_name: z.string(),

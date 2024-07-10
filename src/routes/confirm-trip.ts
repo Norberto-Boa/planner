@@ -5,6 +5,7 @@ import { prisma } from "../lib/prisma";
 import { getMailClient } from "../lib/mail";
 import { formatDate } from "../lib/formatDate";
 import nodemailer from 'nodemailer';
+import { ClientError } from "../errors/client-error";
 
 
 export async function confirmTrip(app: FastifyInstance) {
@@ -29,7 +30,7 @@ export async function confirmTrip(app: FastifyInstance) {
     });
 
     if (!trip) {
-      throw new Error("Viagem não encontrada!");
+      throw new ClientError("Viagem não encontrada!");
     }
 
     if (trip.is_confirmed) {

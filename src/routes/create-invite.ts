@@ -7,6 +7,7 @@ import { createInviteSchema } from "../validators/participant/createInviteSchema
 import { getMailClient } from "../lib/mail";
 import nodemailer from 'nodemailer';
 import { formatDate } from "../lib/formatDate";
+import { ClientError } from "../errors/client-error";
 
 export async function createInvite(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post('/trips/:tripId/invites', {
@@ -25,7 +26,7 @@ export async function createInvite(app: FastifyInstance) {
     });
 
     if (!trip) {
-      throw new Error("Viagem nao encontrada!");
+      throw new ClientError("Viagem nao encontrada!");
     }
 
     const participant = await prisma.participant.create({

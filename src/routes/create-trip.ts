@@ -8,6 +8,7 @@ import { getMailClient } from "../lib/mail";
 import nodemailer from 'nodemailer';
 import { formatDate } from "../lib/formatDate";
 import { ClientError } from "../errors/client-error";
+import { env } from "../env";
 
 export async function createTrip(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post('/trips', {
@@ -50,7 +51,7 @@ export async function createTrip(app: FastifyInstance) {
       }
     });
 
-    const confirmationLink = `http://localhost:3333/trips/${trip.id}/confirm`
+    const confirmationLink = `${env.API_BASE_URL}/trips/${trip.id}/confirm`
 
     const formattedStartDate = formatDate(starts_at)
     const formattedEndDate = formatDate(ends_at)

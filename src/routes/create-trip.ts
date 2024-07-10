@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { createTripSchema } from "../validators/trips/createTripSchema";
-import dayjs from "dayjs";
+import { dayjs } from "../lib/formatDate";
 import { prisma } from "../lib/prisma";
 import { getMailClient } from "../lib/mail";
 import nodemailer from 'nodemailer';

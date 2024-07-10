@@ -8,3 +8,5 @@ dayjs.extend(localizedFormat);
 export function formatDate(date: Date) {
   return dayjs(date).format("LL")
 }
+
+export { dayjs };

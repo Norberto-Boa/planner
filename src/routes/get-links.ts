@@ -1,0 +1,29 @@
+import { FastifyInstance } from "fastify";
+import { ZodTypeProvider } from "fastify-type-provider-zod";
+import { prisma } from "../lib/prisma";
+import { createLinksParamsSchema } from "../validators/links/createLinksSchema";
+
+export async function getLinks(app: FastifyInstance) {
+  app.withTypeProvider<ZodTypeProvider>().get('/trips/:tripId/links', {
+    schema: {
+      params: createLinksParamsSchema
+    }
+  }, async (req) => {
+    const { tripId } = req.params;
+
+    const trip = await prisma.trip.findUnique({
+      where: {
+        id: tripId
+      },
+      include: {
+        links: true
+      }
+    });
+
+    if (!trip) {
+      throw new Error("Viagem nao encontrada!");
+    }
+
+    return { links: trip.links };
+  });
+}

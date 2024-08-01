@@ -3,7 +3,6 @@ import cors from "@fastify/cors";
 import { createTrip } from "./routes/create-trip";
 import { validatorCompiler, serializerCompiler } from "fastify-type-provider-zod";
 import { confirmTrip } from "./routes/confirm-trip";
-import { confirmParticipantOnTrip } from "./routes/confirm-participant";
 import { createActivity } from "./routes/create-activity";
 import { getActivities } from "./routes/get-activities";
 import { createLink } from "./routes/create-link";
@@ -13,6 +12,7 @@ import { createInvite } from "./routes/create-invite";
 import { updateTrip } from "./routes/update-trip";
 import { getTripDetails } from "./routes/get-trip-details";
 import { getParticipant } from "./routes/get-participant";
+import { participantRoutes } from "./routes/participantRoutes";
 
 const app = fastify();
 
@@ -24,9 +24,11 @@ app.register(cors, {
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
+
+// Registering routes
+app.register(participantRoutes);
 app.register(createTrip);
 app.register(confirmTrip);
-app.register(confirmParticipantOnTrip)
 app.register(createActivity);
 app.register(getActivities);
 app.register(createLink);

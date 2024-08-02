@@ -14,11 +14,13 @@ export async function participantRoutes(fastify: FastifyInstance) {
     }
   }, participant.confirmParticipant);
 
-  // Get participant Route
+  // Get participant By Id Route
   fastify.withTypeProvider<ZodTypeProvider>().get(`/participants/:participantId`, {
     schema: {
       params: participantIdAsParamsSchema
     }
   }, participant.getParticipant);
+
+  // 
 }
 

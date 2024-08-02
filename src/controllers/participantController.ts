@@ -1,22 +1,24 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 import { confirmParticipantOnTripSchema } from "../validators/participant/confirmParticipantOnTripSchema";
-import { confirmParticipantService, getParticipantByIdService } from "../services/participantService";
-import { participantIdAsParamsSchema } from "../validators/global";
+import { confirmParticipantService, getParticipantByIdService, getParticipantByTripIdService } from "../services/participantService";
+import { participantIdAsParamsSchema, tripIdAsParamsSchema } from "../validators/global";
+import { getTripByIdService } from "../services/tripService";
 
 // Confirm Participant Request
-type confirmParticipantRequest = FastifyRequest<{
+type ParticipantIdAsParamRequest = FastifyRequest<{
   Params: z.infer<typeof confirmParticipantOnTripSchema>;
 }>;
 
-//
-type getParticipantRequest = FastifyRequest<{
-  Params: z.infer<typeof participantIdAsParamsSchema>;
-}>
+// getParticipantRequest
+
+type tripIdAsParamRequest = FastifyRequest<{
+  Params: z.infer<typeof tripIdAsParamsSchema>;
+}>;
 
 class ParticipantController {
   // Confirm participant on trip Controller
-  async confirmParticipant(request: confirmParticipantRequest, reply: FastifyReply) {
+  async confirmParticipant(request: ParticipantIdAsParamRequest, reply: FastifyReply) {
     const { participantId } = request.params;
 
     const participant = await getParticipantByIdService(participantId);
@@ -34,9 +36,8 @@ class ParticipantController {
     return { participant };
   }
 
-
-
-  async getParticipant(request: getParticipantRequest, reply: FastifyReply) {
+  // Get participant by Id Controller
+  async getParticipant(request: ParticipantIdAsParamRequest, reply: FastifyReply) {
     const { participantId } = request.params;
 
     const participant = await getParticipantByIdService(participantId);
@@ -46,6 +47,15 @@ class ParticipantController {
     }
 
     return { participant };
+  }
+
+  // Get all participants controller
+  async getAllParticipants(request: tripIdAsParamRequest) {
+    const { tripId } = request.params;
+
+    const participants = await getParticipantByTripIdService(tripId);
+
+    return { participants: participants }
   }
 }
 

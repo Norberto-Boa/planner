@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { confirmParticipantOnTripSchema } from "../validators/participant/confirmParticipantOnTripSchema";
 import { ParticipantController } from "../controllers/participantController";
-import { participantIdAsParamsSchema } from "../validators/global";
+import { participantIdAsParamsSchema, tripIdAsParamsSchema } from "../validators/global";
 
 const participant = new ParticipantController();
 
@@ -10,7 +10,7 @@ export async function participantRoutes(fastify: FastifyInstance) {
   // Confirm participant on trip Route
   fastify.withTypeProvider<ZodTypeProvider>().get(`/participants/:participantId/confirm`, {
     schema: {
-      params: confirmParticipantOnTripSchema
+      params: participantIdAsParamsSchema
     }
   }, participant.confirmParticipant);
 
@@ -21,6 +21,11 @@ export async function participantRoutes(fastify: FastifyInstance) {
     }
   }, participant.getParticipant);
 
-  // 
+  // Get participants By Trip Id Route
+  fastify.withTypeProvider<ZodTypeProvider>().get(`/trips/:tripId/participants`, {
+    schema: {
+      params: tripIdAsParamsSchema
+    }
+  }, participant.getAllParticipants);
 }
 

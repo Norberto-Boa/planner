@@ -25,6 +25,8 @@ app.setSerializerCompiler(serializerCompiler);
 
 // Registering routes
 app.register(participantRoutes);
+
+
 app.register(createTrip);
 app.register(confirmTrip);
 app.register(createActivity);
